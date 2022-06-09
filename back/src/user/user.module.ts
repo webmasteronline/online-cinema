@@ -1,9 +1,23 @@
-import { Module } from '@nestjs/common';
-import { UserController } from './user.controller';
-import { UserService } from './user.service';
+import { ConfigModule } from '@nestjs/config'
+import { UserModel } from 'src/user/user.model'
+import { TypegooseModule } from 'nestjs-typegoose'
+import { Module } from '@nestjs/common'
+import { UserController } from './user.controller'
+import { UserService } from './user.service'
 
 @Module({
-  controllers: [UserController],
-  providers: [UserService]
+	imports: [
+		TypegooseModule.forFeature([
+			{
+				typegooseClass: UserModel,
+				schemaOptions: {
+					collection: 'User',
+				},
+			},
+		]),
+		ConfigModule,
+	],
+	providers: [UserService],
+	controllers: [UserController],
 })
 export class UserModule {}
