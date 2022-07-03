@@ -52,6 +52,17 @@ export class MovieService {
 		return updateDoc
 	}
 
+//newRating: number - принимает в себя рейтинг который мы будем задавать 
+//rating: newRating - должен будет равняться уже новому рейтингу который ми задали 
+//new: true и если не было до этого рейтинга у фильма то он создастся новый
+	async updateRating(id:Types.ObjectId, newRating: number){
+		return this.MovieModel.findByIdAndUpdate(id, {
+			rating: newRating
+		},{
+			new: true
+		}).exec()
+	}
+
 	//$gt: 0 - оператор MoongoDB 
 	//выбераем только те фильмы у которых поле countOpened > 0
 	//.sort({countOpened: -1}) - сортирока в обратную сторону 

@@ -15,7 +15,7 @@ export class UserModel extends TimeStamps {
 	@prop({ default: false })
 	isAdmin?: boolean
 
-	//Ref<MovieModel>[] здесь будут храниться ID наших фильмов
+//Ref<MovieModel>[] здесь будут храниться ID наших фильмов 
 	@prop({ default: [], ref: () => MovieModel })
 	favorites?: Ref<MovieModel>[]
 }
