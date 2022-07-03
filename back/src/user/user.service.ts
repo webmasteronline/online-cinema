@@ -4,6 +4,7 @@ import { UserModel } from 'src/user/user.model'
 import { InjectModel } from 'nestjs-typegoose'
 import { Injectable, NotFoundException } from '@nestjs/common'
 import { UpdateUserDto } from './dto/updateUser.dto'
+import { Types } from 'mongoose'
 
 @Injectable()
 export class UserService {
@@ -69,5 +70,21 @@ export class UserService {
 	//удаление пользователя
 	async delete(id: string) {
 		return this.UserModel.findByIdAndDelete(id).exec()
+	}
+
+	async toggleFavorite(movieId: Types.ObjectId, user: UserModel){
+		//вытаскиваем из user что нам нужно _id, favorites- текущий. можно было сделать это и выше - {_id, favorites}: UserModel
+	//favorites.includes(movieId) - если содержит movieId то мы его убираем с помощтю favorites.filter - а именно мы возвращаем в массив все кроме текущего movieId
+	// : иначе если он не содержится то мы его просто добовляем в массив : [...favorites, movieId]
+		const {_id, favorites} = user
+		await this.UserModel.findByIdAndUpdate(_id, {
+			favorites: favorites.includes(movieId) ? favorites.filter((id) => String(id) !== String(movieId)) : [...favorites, movieId]
+		})
+	}
+//.populate('favorites') - седержит id фильмов , а нам нужно еще вывести жанры фильмов
+//.populate({path: 'favorites', populate: {path: 'genres'}}) - глубокий популейт 
+// в конце нам необходимо получить именно favorites поэтому пишем - .then((data) => data.favorites)
+	async getFavoriteMovies(_id:Types.ObjectId){
+		return this.UserModel.findById(_id, 'favorites').populate({path: 'favorites', populate: {path: 'genres'}}).exec().then((data) => data.favorites)
 	}
 }

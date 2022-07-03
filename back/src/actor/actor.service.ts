@@ -34,12 +34,33 @@ export class ActorService {
 				],
 			}
 		// Aggregation
+	//$match - Filters the document stream to allow only matching documents to pass unmodified into the next pipeline stage. $match uses standard MongoDB queries. For each input document, outputs either one document (a match) or zero documents (no match).
+	//осуществили перебор . мы взяли таблицу Movie в нем поле актров - это массив _id foreignField: 'actors' мы перебераем и сравниваем с локальным localField: '_id' из нашей модели(таблицы актеров) ActorModel . Полностью совместили атеров с фильмами по id
 
-		// select убераем лишние поля у Юзера из базы данных -password -updateAt -__v
-		return this.ActorModel.find(options)
-			.select('-updateAt -__v')
-			.sort({ createdAt: 'desc' })
+	//когда мы все сравнили и записали результаты в поле movies , мы с помощью оператора $size подсчитываем количество фильмов где учавствовал наш actor
+
+	//.project() как и select убирает не нужные поля. Поле movies мы убираем оно нам нужно было толюко для подсчета фильмов. 
+		return this.ActorModel.aggregate().match(options).lookup({
+			from: 'Movie',
+			foreignField: 'actors',
+			localField: '_id',
+			as: 'movies'
+		}).addFields({
+			countMovies:{
+				$size: '$movies'
+			}
+		})
+		.project({__v: 0,
+			updateAt: 0,
+			movies: 0
+		})
+			.sort({ createdAt: -1 })
 			.exec()
+		// select убераем лишние поля у Юзера из базы данных -password -updateAt -__v
+		// return this.ActorModel.find(options)
+		// 	.select('-updateAt -__v')
+		// 	.sort({ createdAt: 'desc' })
+		// 	.exec()
 	}
 
 
