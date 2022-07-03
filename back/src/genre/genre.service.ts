@@ -11,7 +11,8 @@ export class GenreService {
 	){}
 
 	async bySlug(slug:string){
-		return this.GenreModel.findOne({slug}).exec()
+		const doc = await this.GenreModel.findOne({slug}).exec()
+		if(!doc) throw new NotFoundException('Genre not found')
 	}
 
 	//получение всех жанров
