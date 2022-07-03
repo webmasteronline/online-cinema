@@ -1,14 +1,16 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { ModelType } from '@typegoose/typegoose/lib/types';
+import { DocumentType, ModelType } from '@typegoose/typegoose/lib/types';
 import { InjectModel } from 'nestjs-typegoose';
 import { UpdateMovieDto } from './dto/updateMovie.dto';
 import {MovieModel} from './movie.model'
 import { Types } from 'mongoose';
+import { TelegramService } from 'src/telegram/telegram.service';
 
 @Injectable()
 export class MovieService {
 	constructor(
-		@InjectModel(MovieModel) private readonly MovieModel: ModelType<MovieModel>
+		@InjectModel(MovieModel) private readonly MovieModel: ModelType<MovieModel>,
+		private readonly telegramService: TelegramService
 	) {}
 
 	
@@ -88,10 +90,9 @@ export class MovieService {
 	// фронтЕнд требует так чт опо одному атеру щем но по множеству жанров 
 	//тоесть мы здесь будем получать объект жанров
 	//{$in: genreIds} мы используем когда ищем грубо говоря массив в массиве
-	async byGenres(genreIds: Types.ObjectId[]){
-		const docs = await this.MovieModel.find({genres: {$in: genreIds}}).exec()
-		if(!docs) throw new NotFoundException('Movies not found')
-		return docs
+	async byGenres(genreIds: Types.ObjectId[]): Promise<DocumentType<MovieModel>[]> {
+		return this.MovieModel.find({ genres: { $in: genreIds } }).exec()
+
 	}
 
 
@@ -123,6 +124,10 @@ export class MovieService {
 	}
 
 	async update(_id: string, dto: UpdateMovieDto) {
+		if (!dto.isSendTelegram) {
+			await this.sendNotification(dto)
+			dto.isSendTelegram = true
+		}
 		//находи по _id и сразу обновляем 
 		//опция new: true обозначает что мы будем возвращатьне старую версию movie а уже обновленную новую 
 		const updateDoc = await this.MovieModel.findByIdAndUpdate(_id, dto, {
@@ -146,5 +151,25 @@ export class MovieService {
 	return deleteDoc
 	}
 
+	async sendNotification(dto: UpdateMovieDto){
+		//if (process.env.NODE_ENV !== 'development')
+		// await this.telegramService.sendPhoto(dto.poster)
+		await this.telegramService.sendPhoto('https://morguefile.nyc3.cdn.digitaloceanspaces.com/imageData/public/files/m/middlewick/preview/fldr_2008_11_28/file000615586116.jpg')
+
+		const msg = `<b>${dto.title}</b>`
+
+		await this.telegramService.sendMessage(msg, {
+			reply_markup:{
+				inline_keyboard:[
+					[
+						{
+							url: 'https://okko.tv/movie/free-guy',
+							text: 'Go to watch',
+						}
+					]
+				]
+			}
+		})
+	}
 
 }
