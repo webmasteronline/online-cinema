@@ -7,3 +7,5 @@ export interface IGenre {
 	description: string
 	icon: TypeMaterialIconName
 }
+
+export interface IMovie {}

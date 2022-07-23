@@ -1,6 +1,8 @@
 import { FC } from 'react'
 import { QueryClient, QueryClientProvider } from 'react-query'
 
+import Layout from '@/components/layout/Layout'
+
 import { IMainProvider } from './MainProvider.interface'
 
 const queryClient = new QueryClient({
@@ -13,7 +15,9 @@ const queryClient = new QueryClient({
 
 const MainProvider: FC<IMainProvider> = ({ children }) => {
 	return (
-		<QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+		<QueryClientProvider client={queryClient}>
+			<Layout>{children}</Layout>
+		</QueryClientProvider>
 	)
 }
 
