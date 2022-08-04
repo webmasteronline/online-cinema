@@ -10,7 +10,7 @@ import { onlyText } from '../string/clearText'
 
 import { ISeo } from './meta.interface'
 
-const Meta: FC<ISeo> = ({ title, description, image, children }) => {
+export const Meta: FC<ISeo> = ({ title, description, image, children }) => {
 	const {} = useRouter()
 	const currentUrl = `${process.env.APP_URL}${asPath}`
 
@@ -48,5 +48,3 @@ const Meta: FC<ISeo> = ({ title, description, image, children }) => {
 		</>
 	)
 }
-
-export default Meta

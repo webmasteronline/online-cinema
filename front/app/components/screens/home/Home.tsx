@@ -3,7 +3,7 @@ import { toastr } from 'react-redux-toastr'
 
 import Heading from '@/components/ui/heading/Heading'
 
-import Meta from '@/utils/meta/Meta'
+import { Meta } from '@/utils/meta/Meta'
 
 import { IHome } from './home.interface'
 
