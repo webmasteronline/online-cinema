@@ -1,0 +1,25 @@
+.wrapper {
+	@apply mt-32;
+
+	/*mx-auto - блок по центру*/
+	> form {
+		@apply mx-auto w-1/2 air-block bg-opacity-80  p-7 text-center;
+
+		.buttons {
+			@apply mt-12 shadow-lg;
+
+			> button {
+				&:first-child {
+					/*  rounded-r-none убирает закругления у кнопки справа*/
+					@apply rounded-r-none;
+				}
+
+				&:last-child {
+					/*  rounded-l-none убирает закругления у кнопки слева*/
+					@apply rounded-l-none opacity-80 hover:opacity-100 transition-opacity;
+					background-color: #8f050b;
+				}
+			}
+		}
+	}
+}
