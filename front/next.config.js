@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
 	//reactStrictMode: true,  //строгая типизация много варнингов если устарели библеотеки штука полезная но если только не пользоватся сторонними библиотеками
-	poweredByHeader: false, //если кто-то будет пробивать на чем сделаннаш сайт то он не увидет чт онаш сайт сделан на NextJS.
+	poweredByHeader: false, //если кто-то будет пробивать на чем сделаннаш сайт то он не увидет что наш сайт сделан на NextJS.
 	optimizeFonts: false,
 	env: {
 		APP_URL: process.env.REACT_APP_URL,
