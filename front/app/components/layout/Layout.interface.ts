@@ -1,5 +1,5 @@
-import React from 'react';
+import React from 'react'
 
-export interface ILayout{
-	children: React.ReactElement
-}
+// export interface ILayout {
+// 	children: React.ReactElement
+// }

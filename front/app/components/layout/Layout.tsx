@@ -1,11 +1,11 @@
-import { FC } from 'react'
+import { FC, PropsWithChildren } from 'react'
 
-import { ILayout } from './Layout.interface'
+//import { ILayout } from './Layout.interface'
 import styles from './Layout.module.scss'
 import Navigation from './Navigation/Navigation'
 import Sidebar from './Sidebar/Sidebar'
 
-const Layout: FC<ILayout> = ({ children }) => {
+const Layout: FC<PropsWithChildren> = ({ children }) => {
 	return (
 		<div className={styles.layout}>
 			<Navigation />
