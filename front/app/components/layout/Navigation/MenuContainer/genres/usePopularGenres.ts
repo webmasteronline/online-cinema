@@ -4,7 +4,7 @@ import { GenreService } from '@/services/genre.service'
 
 import { getGenreUrl } from '@/configs/url.config'
 
-import { IMenuItem } from '../menu.interface'
+import { IMenuItem } from '../menu.types'
 
 /* our hook */
 //будет овечать за подачу наших данных с базы данных

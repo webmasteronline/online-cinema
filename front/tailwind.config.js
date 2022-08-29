@@ -112,7 +112,7 @@ module.exports = {
 					borderRadius: theme(
 						'borderRadius.layout'
 					) /* здесь мы уже используем наши значения которые задавали выше borderRadius.layout: '0.8rem */,
-					backgroundColorL: theme('colors.gray.950'),
+					backgroundColor: theme('colors.gray.950'),
 					color: theme('colors.white'),
 					boxShadow: theme('boxShadow.lg'),
 				},
