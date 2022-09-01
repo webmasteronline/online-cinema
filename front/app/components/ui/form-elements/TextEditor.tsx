@@ -7,7 +7,6 @@ import { Editor } from 'react-draft-wysiwyg'
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
 
 import { ITextEditor } from './form.interface'
-
 import styles from './form.module.scss'
 
 const TextEditor: FC<ITextEditor> = ({
@@ -16,8 +15,11 @@ const TextEditor: FC<ITextEditor> = ({
 	error,
 	value,
 }) => {
+	//Создаем не так useState('') , а именно нужно создать пустой стейт вот таким образом useState(EditorState.createEmpty())
 	const [editorState, setEditorState] = useState(EditorState.createEmpty())
 
+	//состояние обновления - тоесть мы будем подгружать состояние только один раз, до его обновления (изменения пользователем)
+	//за это будет овечать useEffect(() =>[value, isUpdated]) в зависимостях isUpdated тоесть при изменении этого параметра будет срабатывать
 	const [isUpdated, setIsUpdated] = useState(false)
 
 	useEffect(() => {
@@ -33,10 +35,12 @@ const TextEditor: FC<ITextEditor> = ({
 		}
 	}, [value, isUpdated])
 
+	//Создаем хендлер который будет срабатывать при редактирование текста в нашем редакторе
 	const onEditorStateChange = (editorState: EditorState) => {
 		setIsUpdated(true)
 		setEditorState(editorState)
 
+		//что бы смогли записать все что мы сделали в редакиторе в react-hook-form
 		return onChange(draftToHtml(convertToRaw(editorState.getCurrentContent())))
 	}
 

@@ -1,17 +1,29 @@
+import dynamic from 'next/dynamic'
 import { FC } from 'react'
-import { useForm } from 'react-hook-form'
+import { Controller, useForm } from 'react-hook-form'
+import { stripHtml } from 'string-strip-html'
 
 import formStyles from '@/components/shared/admin/adminForm.module.scss'
 import SkeletonLoader from '@/components/ui/SkeletonLoader'
 import AdminNavigation from '@/components/ui/admin-navigation/AdminNavigation'
 import Button from '@/components/ui/form-elements/Button'
 import Field from '@/components/ui/form-elements/Field'
+import SlugField from '@/components/ui/form-elements/SlugField/SlugField'
 import Heading from '@/components/ui/heading/Heading'
 
 import { Meta } from '@/utils/meta/Meta'
+import generateSlug from '@/utils/string/generateSlug'
 
 import { IGenreEditInput } from './genre-edit.interface'
 import { useGenreEdit } from './useGenreEdit'
+
+// DynamicTextEditor = dynamic это для таого что бы TextEditor грузился только на клиенсткой части, так как он требует windows и на серверной будет выдавать ошибку
+const DynamicTextEditor = dynamic(
+	() => import('@/ui/form-elements/TextEditor'),
+	{
+		ssr: false,
+	}
+)
 
 //mode: 'onChange' - ошибка будет показыватся при изменении любого поля
 const GenreEdit: FC = () => {
@@ -21,6 +33,7 @@ const GenreEdit: FC = () => {
 		formState: { errors },
 		setValue,
 		getValues,
+		control,
 	} = useForm<IGenreEditInput>({
 		mode: 'onChange',
 	})
@@ -44,15 +57,15 @@ const GenreEdit: FC = () => {
 								error={errors.name}
 								style={{ width: '31%' }}
 							/>
-
+							{/**Наша кнопка для генерации поля Slug из поля Title */}
 							<div style={{ width: '31%' }}>
-								{/* <SlugField
+								<SlugField
 									generate={() =>
 										setValue('slug', generateSlug(getValues('name')))
 									}
 									register={register}
 									error={errors.slug}
-								/> */}
+								/>
 							</div>
 
 							<Field
@@ -64,7 +77,7 @@ const GenreEdit: FC = () => {
 								style={{ width: '31%' }}
 							/>
 						</div>
-						{/* <Controller
+						<Controller
 							name="description"
 							control={control}
 							defaultValue=""
@@ -86,7 +99,7 @@ const GenreEdit: FC = () => {
 										'Description is required!',
 								},
 							}}
-						/> */}
+						/>
 						<Button>Update</Button>
 					</>
 				)}
