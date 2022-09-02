@@ -25,3 +25,13 @@ export interface ITextEditor extends Omit<TypeInputPropsField, 'editorState'> {
 	onChange: (...event: any[]) => void
 	value: string
 }
+
+export interface IUploadField {
+	folder?: string
+	image?: string
+	onChange: (...event: any[]) => void
+	placeholder: string
+	error?: FieldError
+	style?: CSSProperties
+	isNoImage?: boolean
+}

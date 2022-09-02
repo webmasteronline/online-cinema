@@ -1,9 +1,9 @@
 import { ChangeEvent, useCallback, useMemo, useState } from 'react'
 import { useMutation } from 'react-query'
 
-import { FileService } from '@/services/file/file.service'
+import { FileService } from '@/services/file.service'
 
-import { toastError } from '@/utils/api/withToastrErrorRedux'
+import { toastError } from '@/utils/toast-error'
 
 type TypeUpload = (
 	onChange: (...event: any[]) => void,
@@ -35,7 +35,7 @@ export const useUpload: TypeUpload = (onChange, folder) => {
 			const files = e.target.files
 			if (files?.length) {
 				const formData = new FormData()
-				formData.append('image', files[0])
+				formData.append('file', files[0])
 				await mutateAsync(formData)
 
 				setTimeout(() => {
