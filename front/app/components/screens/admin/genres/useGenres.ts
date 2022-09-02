@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router'
 import { ChangeEvent, useMemo, useState } from 'react'
 import { useMutation, useQuery } from 'react-query'
 import { toastr } from 'react-redux-toastr'
@@ -38,6 +39,24 @@ export const useGenres = () => {
 		setSearchTerm(e.target.value)
 	}
 
+	const { push } = useRouter()
+
+	const { mutateAsync: createAsync } = useMutation(
+		'create genre',
+		//передавать мы тут ничего не будем поэтому пусто
+		() => GenreService.create(),
+		{
+			onError: (error) => {
+				toastError(error, 'Create list')
+			},
+			onSuccess: ({ data: _id }) => {
+				toastr.success('Create genre', 'create was successful')
+				//refetch() здесь мы уже не рефетчим а перенаправляем на страницу редактирования после создания сучности
+				//onSuccess: ({ data: _id }) берем id по нему мы будем именно эту сучность и редактировать
+				push(getAdminUrl(`genre/edit/${_id}`))
+			},
+		}
+	)
 	const { mutateAsync: deleteAsync } = useMutation(
 		'delete genre',
 		(genreId: string) => GenreService.delete(genreId),
@@ -51,6 +70,7 @@ export const useGenres = () => {
 			},
 		}
 	)
+
 	//используем useMemo так как будет много переменных и чтобы как-то оптимизировать это дело закешировать
 	// и все это будет меняться при [queryData, searchTerm, deleteAsync]
 	return useMemo(
@@ -59,7 +79,8 @@ export const useGenres = () => {
 			...queryData,
 			searchTerm,
 			deleteAsync,
+			createAsync,
 		}),
-		[queryData, searchTerm, deleteAsync]
+		[queryData, searchTerm, deleteAsync, createAsync]
 	)
 }

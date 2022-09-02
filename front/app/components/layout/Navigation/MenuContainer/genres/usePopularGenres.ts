@@ -16,6 +16,8 @@ export const usePopularGenres = () => {
 		{
 			select: ({ data }) =>
 				data
+					//.filter(genre => genre.icon) - добавили этот код если в жанре поле любое допустим icon заполнено тоесть существует то только тогда выводить
+					.filter((genre) => genre.icon)
 					.map(
 						(genre) =>
 							({

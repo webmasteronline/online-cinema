@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router'
 import { ChangeEvent, useMemo, useState } from 'react'
 import { useMutation, useQuery } from 'react-query'
 import { toastr } from 'react-redux-toastr'
@@ -37,10 +38,27 @@ export const useActors = () => {
 	const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
 		setSearchTerm(e.target.value)
 	}
+	const { push } = useRouter()
 
+	const { mutateAsync: createAsync } = useMutation(
+		'create actor',
+		//передавать мы тут ничего не будем поэтому пусто
+		() => ActorService.create(),
+		{
+			onError: (error) => {
+				toastError(error, 'Create actor')
+			},
+			onSuccess: ({ data: _id }) => {
+				toastr.success('Create actor', 'create was successful')
+				//refetch() здесь мы уже не рефетчим а перенаправляем на страницу редактирования после создания сучности
+				//onSuccess: ({ data: _id }) берем id по нему мы будем именно эту сучность и редактировать
+				push(getAdminUrl(`actor/edit/${_id}`))
+			},
+		}
+	)
 	const { mutateAsync: deleteAsync } = useMutation(
 		'delete actor',
-		(actorId: string) => ActorService.deleteActor(actorId),
+		(actorId: string) => ActorService.delete(actorId),
 		{
 			onError: (error) => {
 				toastError(error, 'Delete list')
@@ -59,7 +77,8 @@ export const useActors = () => {
 			...queryData,
 			searchTerm,
 			deleteAsync,
+			createAsync,
 		}),
-		[queryData, searchTerm, deleteAsync]
+		[queryData, searchTerm, deleteAsync, createAsync]
 	)
 }

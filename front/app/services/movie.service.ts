@@ -1,5 +1,7 @@
 import axios from 'api/interceptors'
 
+import { IMovieEditInput } from '@/components/screens/admin/movie/movie-edit.interface'
+
 import { IMovie } from '@/shared/types/movie.types'
 
 import { getMoviesUrl } from '@/configs/api.config'
@@ -19,8 +21,21 @@ export const MovieService = {
 		)
 		return movies
 	},
+	async getById(_id: string) {
+		return axios.get<IMovieEditInput>(getMoviesUrl(`/${_id}`))
+	},
+
+	//релизация создания
+	//пустой отправляет только Post запрос
+	async create() {
+		return axios.post<string>(getMoviesUrl('/'))
+	},
+	//релизация обновление
+	async update(_id: string, data: IMovieEditInput) {
+		return axios.put<string>(getMoviesUrl(`/${_id}`), data)
+	},
 	//релизация удаления
-	async deleteMovie(_id: string) {
+	async delete(_id: string) {
 		return axios.delete<string>(getMoviesUrl(`/${_id}`))
 	},
 }

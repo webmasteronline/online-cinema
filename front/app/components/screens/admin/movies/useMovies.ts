@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router'
 import { ChangeEvent, useMemo, useState } from 'react'
 import { useMutation, useQuery } from 'react-query'
 import { toastr } from 'react-redux-toastr'
@@ -44,9 +45,28 @@ export const useMovies = () => {
 		setSearchTerm(e.target.value)
 	}
 
+	const { push } = useRouter()
+
+	const { mutateAsync: createAsync } = useMutation(
+		'create movie',
+		//передавать мы тут ничего не будем поэтому пусто
+		() => MovieService.create(),
+		{
+			onError: (error) => {
+				toastError(error, 'Create movie')
+			},
+			onSuccess: ({ data: _id }) => {
+				toastr.success('Create movie', 'create was successful')
+				//refetch() здесь мы уже не рефетчим а перенаправляем на страницу редактирования после создания сучности
+				//onSuccess: ({ data: _id }) берем id по нему мы будем именно эту сучность и редактировать
+				push(getAdminUrl(`movie/edit/${_id}`))
+			},
+		}
+	)
+
 	const { mutateAsync: deleteAsync } = useMutation(
 		'delete movie',
-		(movieId: string) => MovieService.deleteMovie(movieId),
+		(movieId: string) => MovieService.delete(movieId),
 		{
 			onError: (error) => {
 				toastError(error, 'Delete list')
@@ -65,7 +85,8 @@ export const useMovies = () => {
 			...queryData,
 			searchTerm,
 			deleteAsync,
+			createAsync,
 		}),
-		[queryData, searchTerm, deleteAsync]
+		[queryData, searchTerm, deleteAsync, createAsync]
 	)
 }
