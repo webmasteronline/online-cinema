@@ -1,7 +1,5 @@
-import dynamic from 'next/dynamic'
 import { FC } from 'react'
 import { Controller, useForm } from 'react-hook-form'
-import { stripHtml } from 'string-strip-html'
 
 import formStyles from '@/components/shared/admin/adminForm.module.scss'
 import SkeletonLoader from '@/components/ui/SkeletonLoader'
@@ -17,14 +15,6 @@ import generateSlug from '@/utils/string/generateSlug'
 
 import { IActorEditInput } from './actor-edit.interface'
 import { useActorEdit } from './useActorEdit'
-
-// DynamicTextEditor = dynamic это для таого что бы TextEditor грузился только на клиенсткой части, так как он требует windows и на серверной будет выдавать ошибку
-const DynamicTextEditor = dynamic(
-	() => import('@/ui/form-elements/TextEditor'),
-	{
-		ssr: false,
-	}
-)
 
 //mode: 'onChange' - ошибка будет показыватся при изменении любого поля
 const ActorEdit: FC = () => {
