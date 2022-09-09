@@ -57,7 +57,6 @@ const MovieEdit: FC = () => {
 								placeholder="Title"
 								error={errors.title}
 							/>
-							{/**Наша кнопка для генерации поля Slug из поля Title */}
 
 							<SlugField
 								generate={() =>
@@ -93,10 +92,12 @@ const MovieEdit: FC = () => {
 								error={errors.parameters?.year}
 								style={{ width: '31%' }}
 							/>
-							{/*React Select */}
 							<Controller
 								name="genres"
 								control={control}
+								rules={{
+									required: 'Please select at least one genre!',
+								}}
 								render={({ field, fieldState: { error } }) => (
 									<DynamicSelect
 										field={field}
@@ -107,13 +108,13 @@ const MovieEdit: FC = () => {
 										error={error}
 									/>
 								)}
-								rules={{
-									required: 'Please select at least one genre!',
-								}}
 							/>
 							<Controller
 								name="actors"
 								control={control}
+								rules={{
+									required: 'Please select at least one actor!',
+								}}
 								render={({ field, fieldState: { error } }) => (
 									<DynamicSelect
 										field={field}
@@ -124,14 +125,14 @@ const MovieEdit: FC = () => {
 										error={error}
 									/>
 								)}
-								rules={{
-									required: 'Please select at least one actor!',
-								}}
 							/>
 							<Controller
 								name="poster"
 								control={control}
 								defaultValue=""
+								rules={{
+									required: 'Poster is required!',
+								}}
 								render={({
 									field: { value, onChange },
 									fieldState: { error },
@@ -144,9 +145,6 @@ const MovieEdit: FC = () => {
 										placeholder="Poster"
 									/>
 								)}
-								rules={{
-									required: 'Poster is required!',
-								}}
 							/>
 							<Controller
 								name="bigPoster"
