@@ -8,10 +8,8 @@ import { IGenre } from '@/shared/types/movie.types'
 import { getGenresUrl } from '@/configs/api.config'
 
 export const GenreService = {
-	async getAll(searchTerm?: string) {
-		return axiosClassic.get<IGenre[]>(getGenresUrl(``), {
-			params: searchTerm ? { searchTerm } : {},
-		})
+	async getBySlug(slug: string) {
+		return axiosClassic.get<IGenre>(getGenresUrl(`/by-slug/${slug}`))
 	},
 
 	async getById(_id: string) {
@@ -28,9 +26,24 @@ export const GenreService = {
 	async update(_id: string, data: IGenreEditInput) {
 		return axios.put<string>(getGenresUrl(`/${_id}`), data)
 	},
-
+	async getAll(searchTerm?: string) {
+		return axiosClassic.get<IGenre[]>(getGenresUrl(``), {
+			params: searchTerm
+				? {
+						searchTerm,
+				  }
+				: {},
+		})
+	},
 	//релизация удаления
 	async delete(_id: string) {
 		return axios.delete<string>(getGenresUrl(`/${_id}`))
+	},
+	async getPopularGenres(limit: number = 4) {
+		return axiosClassic.get<IGenre[]>(getGenresUrl(`/popular`), {
+			params: {
+				limit,
+			},
+		})
 	},
 }

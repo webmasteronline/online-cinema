@@ -1,6 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common'
-import { ModelType } from '@typegoose/typegoose/lib/types'
-import e from 'express'
+import { ModelType, DocumentType } from '@typegoose/typegoose/lib/types'
 import { InjectModel } from 'nestjs-typegoose'
 import { MovieService } from 'src/movie/movie.service'
 import { CreateGenreDto } from './dto/createGenre.dto'
@@ -13,11 +12,6 @@ export class GenreService {
 		@InjectModel(GenreModel) private readonly GenreModel: ModelType<GenreModel>,
 		private readonly movieService: MovieService
 	) {}
-
-	async bySlug(slug: string) {
-		const doc = await this.GenreModel.findOne({ slug }).exec()
-		if (!doc) throw new NotFoundException('Genre not found')
-	}
 
 	//получение всех жанров
 	//searchTerm - поиск конкретного жанра в админке по email
@@ -41,6 +35,17 @@ export class GenreService {
 		// select убераем лишние поля у Юзера из базы данных -password -updateAt -__v
 		return this.GenreModel.find(options)
 			.select('-updateAt -__v')
+			.sort({ createdAt: 'desc' })
+			.exec()
+	}
+
+	async bySlug(slug: string): Promise<DocumentType<GenreModel>> {
+		return this.GenreModel.findOne({ slug }).exec()
+	}
+
+	async getPopular(): Promise<DocumentType<GenreModel>[]> {
+		return this.GenreModel.find()
+			.select('-updatedAt -__v')
 			.sort({ createdAt: 'desc' })
 			.exec()
 	}

@@ -1,28 +1,44 @@
-import { Body, Controller, Delete, Get, HttpCode, Param, Post, Put, Query, UsePipes, ValidationPipe } from '@nestjs/common';
-import { Auth } from 'src/auth/decorators/auth.decorator';
-import { IdValidationPipe } from 'src/pipes/id.validation.pipe';
-import { CreateGenreDto } from './dto/createGenre.dto';
-import { GenreService } from './genre.service';
+import {
+	Body,
+	Controller,
+	Delete,
+	Get,
+	HttpCode,
+	Param,
+	Post,
+	Put,
+	Query,
+	UsePipes,
+	ValidationPipe,
+} from '@nestjs/common'
+import { Auth } from 'src/auth/decorators/auth.decorator'
+import { IdValidationPipe } from 'src/pipes/id.validation.pipe'
+import { CreateGenreDto } from './dto/createGenre.dto'
+import { GenreService } from './genre.service'
 
 @Controller('genres')
 export class GenreController {
-	constructor(private readonly GenreService: GenreService){	}
+	constructor(private readonly GenreService: GenreService) {}
 
 	@Get('by-slug/:slug')
-	async bySlug(@Param('slug') slug:string){
+	async bySlug(@Param('slug') slug: string) {
 		return this.GenreService.bySlug(slug)
-	}
-
-
-	@Get('/collections')
-	async getCollections() {
-		return this.GenreService.getCollections()
 	}
 
 	//
 	@Get() // так как у нас GEt запрос  то у нас должен быть @Query() параметр пример - @Get()?searchTerm = 'тело запроса'
 	async getAll(@Query('searchTerm') searchTerm?: string) {
 		return this.GenreService.getAll(searchTerm)
+	}
+
+	@Get('/popular')
+	async getPopular() {
+		return this.GenreService.getPopular()
+	}
+
+	@Get('/collections')
+	async getCollections() {
+		return this.GenreService.getCollections()
 	}
 
 	//получения профила пользователя по id
