@@ -1,3 +1,9 @@
 //Тип "FormState<IAuthInput>" не может быть назначен для типа "FormState<any>". - эта ошибка после из 12 урока
 
 // 0 min 20 урок
+
+
+
+
+pages - это роуты 
+app\components\screens - компоненты страниц
