@@ -35,7 +35,12 @@ export class GenreController {
 	async getPopular() {
 		return this.GenreService.getPopular()
 	}
-
+	/*
+	@Get('/collections') - на этот путь мы отправляем запроссы с фронта genre.service.ts
+		async getCollections() {
+		return axiosClassic.get<ICollection[]>(getGenresUrl(`/collections`))
+	},
+	*/
 	@Get('/collections')
 	async getCollections() {
 		return this.GenreService.getCollections()
