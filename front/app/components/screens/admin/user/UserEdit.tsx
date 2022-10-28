@@ -30,7 +30,11 @@ const UserEdit: FC = () => {
 					<SkeletonLoader count={3} />
 				) : (
 					<>
-						<AuthFields register={register} formState={formState} />
+						<AuthFields
+							register={register}
+							formState={formState}
+							isPasswordRequired={false}
+						/>
 						<Controller
 							control={control}
 							name="isAdmin"

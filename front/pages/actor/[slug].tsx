@@ -11,13 +11,13 @@ import Error404 from '../404'
 
 //так как в оличие от freshPage нам тут нужен еще и второй параметр делаем  интерфейс в котоором будет movies: IMovie[] и + нужный нам параметр
 interface IActorPage {
-	movies: IMovie[]
 	actor: IActor | undefined
+	movies: IMovie[]
 }
 
 const ActorPage: NextPage<IActorPage> = ({ movies, actor }) => {
 	return actor ? (
-		<Catalog movies={movies || []} title={actor.name} />
+		<Catalog movies={movies || []} title={actor.name} description="" />
 	) : (
 		<Error404 />
 	)
@@ -48,6 +48,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 		const { data: movies } = await MovieService.getByActor(actor._id)
 		return {
 			props: { movies, actor },
+			revalidate: 60,
 		}
 	} catch (e) {
 		// console.log(errorCatch(e))

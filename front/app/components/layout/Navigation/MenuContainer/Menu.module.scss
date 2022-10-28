@@ -5,27 +5,30 @@
 		@apply text-gray-500 uppercase text-sm font-semibold pl-layout;
 	}
 	.ul {
-		>li{
+		> li {
 			@apply px-8 border-r-4 border-r-transparent transition-colors;
-
-			>a{
-				@apply flex items-center text-gray-600 px-3 mt-6 cursor-pointer;
-				>span {
+			> a {
+				@apply flex items-center text-gray-600 px-6 mt-4 cursor-pointer;
+				@media (max-height: 930px) {
+					@apply px-4;
+				}
+				> span {
 					@apply ml-3 text-lg hover:text-white;
 				}
-				>svg{
+				> svg {
 					@apply text-2lg;
 				}
-				>span, > svg{
+				> span,
+				> svg {
 					@apply transition-colors;
 				}
 			}
-			&.active{
+			&.active {
 				@apply border-r-primary;
-				>a>span{
+				> a > span {
 					@apply text-white;
 				}
-				>a>svg{
+				> a > svg {
 					@apply fill-primary;
 				}
 			}

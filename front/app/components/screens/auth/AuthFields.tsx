@@ -5,9 +5,11 @@ import Field from '@/components/ui/form-elements/Field'
 
 import { validEmail } from '@/shared/regex'
 
+import { IAuthInput } from './auth.interface'
+
 interface IAuthFields {
 	register: UseFormRegister<any>
-	formState: FormState<any>
+	formState: FormState<IAuthInput>
 	isPasswordRequired?: boolean
 }
 

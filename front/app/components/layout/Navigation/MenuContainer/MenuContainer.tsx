@@ -2,7 +2,6 @@ import dynamic from 'next/dynamic'
 import { FC } from 'react'
 
 import Menu from './Menu'
-import GenreMenu from './genres/GenreMenu'
 import { menus } from './menu.data'
 
 const DynamicGenreMenu = dynamic(() => import('./genres/GenreMenu'), {

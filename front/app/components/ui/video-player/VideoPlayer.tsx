@@ -1,4 +1,4 @@
-import classNames from 'classnames'
+import cn from 'classnames'
 import { FC } from 'react'
 
 import { useAuth } from '@/hooks/useAuth'
@@ -18,7 +18,7 @@ const VideoPlayer: FC<IVideoPlayer> = ({ slug, videoSource }) => {
 
 	return (
 		<div
-			className={classNames(styles.wrapper, {
+			className={cn(styles.wrapper, {
 				'h-96': !user, //когда user не авторизован
 			})}
 		>
@@ -42,7 +42,9 @@ const VideoPlayer: FC<IVideoPlayer> = ({ slug, videoSource }) => {
 								<MaterialIcon name="MdHistory" />
 							</button>
 							<button onClick={actions.toggleVideo}>
-								<MaterialIcon name={video.isPlaying ? 'MdPause' : 'MdPlayArrow'} />
+								<MaterialIcon
+									name={video.isPlaying ? 'MdPause' : 'MdPlayArrow'}
+								/>
 							</button>
 							<button onClick={actions.forward}>
 								<MaterialIcon name="MdUpdate" />
@@ -61,8 +63,8 @@ const VideoPlayer: FC<IVideoPlayer> = ({ slug, videoSource }) => {
 										('0' + Math.floor(video.videoTime % 60)).slice(-2)}
 								</p>
 							</div>
-
 						</div>
+
 						<div>
 							<button onClick={actions.fullScreen}>
 								<MaterialIcon name="MdFullscreen" />
@@ -77,10 +79,8 @@ const VideoPlayer: FC<IVideoPlayer> = ({ slug, videoSource }) => {
 	)
 }
 
-
 // If you wanna add change quality buttons
 //kmoskwiak.github.io/videojs-resolution-switcher/
 //https://stackoverflow.com/questions/38626993/change-video-quality-with-sources-pointing-to-different-quality-versions
-
 
 export default VideoPlayer

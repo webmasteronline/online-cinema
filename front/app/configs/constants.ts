@@ -5,3 +5,4 @@ export const bgColor = '#191B1F'
 export const IS_SERVER = typeof window === 'undefined'
 /*если window есть значит клиенсткая часть  */
 export const IS_CLIENT = typeof window !== 'undefined'
+export const IS_PRODUCTION = process.env.APP_ENV === 'production'

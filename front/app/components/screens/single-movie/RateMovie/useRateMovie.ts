@@ -1,14 +1,18 @@
-import { toastr } from 'react-redux-toastr';
-import { RatingService } from '@/services/rating.service'
-import { toastError } from '@/utils/toast-error'
-import { useMutation, useQuery } from 'react-query'
 import { useState } from 'react'
+import { useMutation, useQuery } from 'react-query'
+import { toastr } from 'react-redux-toastr'
 
+import { useAuth } from '@/hooks/useAuth'
 
+import { RatingService } from '@/services/rating.service'
+
+import { toastError } from '@/utils/toast-error'
 
 export const useRateMovie = (movieId: string) => {
 	const [rating, setRating] = useState(0)
 	const [isSended, setIsSended] = useState(false)
+
+	const { user } = useAuth()
 
 	const { refetch } = useQuery(
 		['your movie rating', movieId],
@@ -20,7 +24,7 @@ export const useRateMovie = (movieId: string) => {
 			onError: (error) => {
 				toastError(error, 'Get rating')
 			},
-			enabled: !!movieId, // enabled срабатывает этот параметр только когда есть - movieId  (для того что бы когда бует undefined что бы тоже не сработало)
+			enabled: !!movieId && !!user, // enabled срабатывает этот параметр только когда есть - movieId  (для того что бы когда бует undefined что бы тоже не сработало) !! - двазнака что бы перевести в будеан значение
 		}
 	)
 	const { mutateAsync: rateMovie } = useMutation(
@@ -47,5 +51,5 @@ export const useRateMovie = (movieId: string) => {
 		setRating(nextValue)
 		await rateMovie({ value: nextValue })
 	}
-	return {  isSended, rating, handleClick  }
+	return { isSended, rating, handleClick }
 }

@@ -2,16 +2,21 @@ import cn from 'classnames'
 import { FC, useEffect, useState } from 'react'
 import { useMutation } from 'react-query'
 
+import { useAuth } from '@/hooks/useAuth'
+
 import { UserService } from '@/services/user.service'
 
 import { toastError } from '@/utils/toast-error'
 
+import HeartImage from '../../../../../public/heart-animation.png'
 import { useFavorites } from '../../favorites/useFavorites'
 
 import styles from './FavoriteButton.module.scss'
-import HeartImage from './heart-animation.png'
 
 const FavoriteButton: FC<{ movieId: string }> = ({ movieId }) => {
+	const { user } = useAuth()
+
+	if (!user) return null //если юзер незалогинился то не показываем кнопку сердечко фаворитМовье
 	const [isSmashed, setIsSmashed] = useState(false)
 
 	const { favoriteMovies, refetch } = useFavorites()

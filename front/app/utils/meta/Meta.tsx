@@ -29,7 +29,6 @@ export const Meta: FC<ISeo> = ({ title, description, image, children }) => {
 						/*152 - кол символов */
 						content={onlyText(description!, 152)}
 					/>
-					/* все что -og - это все для соцсетей */
 					<link rel="canonical" href={currentUrl} />
 					<meta property="og:locale" content="en" />
 					<meta property="og:title" content={titleMerge(title)} />

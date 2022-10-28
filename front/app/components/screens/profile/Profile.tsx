@@ -8,8 +8,8 @@ import Heading from '@/components/ui/heading/Heading'
 
 import { Meta } from '@/utils/meta/Meta'
 
-import { IProfileInput } from './Profile.interface'
 import styles from './Profile.module.scss'
+import { IProfileInput } from './profile.interface'
 import { useProfile } from './useProfile'
 
 const Profile: FC = () => {

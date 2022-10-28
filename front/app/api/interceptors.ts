@@ -3,18 +3,20 @@ import Cookies from 'js-cookie'
 
 import { AuthService } from '@/services/auth/auth.service'
 
-import { API_URL } from '@/configs/api.config'
+import { API_SERVER_URL, API_URL } from '@/configs/api.config'
+import { IS_PRODUCTION } from '@/configs/constants'
 
 import { removeTokensStorage } from './../services/auth/auth.halper'
 import { errorCatch, getContentType } from './api.helpers'
 
 export const axiosClassic = axios.create({
-	baseURL: API_URL,
+	baseURL: IS_PRODUCTION ? API_SERVER_URL : API_URL, //только для деплоя когда мы работаем на сервере нужен API_SERVER_URL
 	headers: {
 		'Content-Type': 'application/json',
 	},
 })
 
+//так как axios работает на клиенте ему подходит стандартный API_URL
 export const instance = axios.create({
 	baseURL: API_URL,
 	headers: getContentType(),

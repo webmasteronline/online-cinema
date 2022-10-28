@@ -58,6 +58,7 @@ const Auth: FC = () => {
 
 	return (
 		<Meta title="Auth">
+			<></>
 			<section className={styles.wrapper}>
 				<form onSubmit={handleSubmit(onSubmit)}>
 					<Heading title="Auth" className="mb-6 text-3xl" />

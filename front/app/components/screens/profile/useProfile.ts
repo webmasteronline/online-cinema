@@ -5,7 +5,7 @@ import { toastr } from 'react-redux-toastr'
 import { UserService } from '@/services/user.service'
 
 import { toastError } from './../../../utils/toast-error'
-import { IProfileInput } from './Profile.interface'
+import { IProfileInput } from './profile.interface'
 
 export const useProfile = (setValue: UseFormSetValue<IProfileInput>) => {
 	const { isLoading } = useQuery('profile', () => UserService.getProfile(), {

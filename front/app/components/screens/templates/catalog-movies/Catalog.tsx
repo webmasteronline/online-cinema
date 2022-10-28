@@ -15,9 +15,7 @@ const Catalog: FC<ICatalog> = ({ movies, title, description }) => {
 	return (
 		<Meta title={title} description={description}>
 			<Heading title={title} className={styles.heading} />
-			{description && (
-				<Description text={description} className={styles.description} />
-			)}
+			{<Description text={description} className={styles.description} />}
 
 			<section className={styles.movies}>
 				{movies.map((movie) => (
